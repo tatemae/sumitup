@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "sumitup"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin Ball"]
@@ -29,7 +29,8 @@ Gem::Specification.new do |s|
     "lib/sumitup.rb",
     "lib/sumitup/parser.rb",
     "spec/spec_helper.rb",
-    "spec/sumitup/parser_spec.rb"
+    "spec/sumitup/parser_spec.rb",
+    "sumitup.gemspec"
   ]
   s.homepage = "http://github.com/tatemae/sumitup"
   s.licenses = ["MIT"]
