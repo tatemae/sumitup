@@ -89,8 +89,8 @@ module Sumitup
             node.remove
           else
             # Force width of images
-            node.attributes['width'].value = me.image_width_limit.to_s
-            node.attributes['height'].remove
+            node['width'] = me.image_width_limit.to_s
+            node.attributes['height'].remove if node.attributes['height']
           end
         end
       end

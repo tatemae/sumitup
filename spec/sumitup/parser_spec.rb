@@ -24,6 +24,7 @@ describe Sumitup::Parser do
         youngest daughter had to sit in the room with us the entire time.  She said, "Daddy's owie was really gross.  I like it when they cover it with 
         something so you can't see it."  She's 4 so suck it up.</p>
         <img src="http://www.example.com/test.jpg" width="600" height="600" />
+        <img src="http://www.example.com/nowidth.jpg" />
         <p>
         		<style type="text/css">
         			.gallery {
@@ -152,6 +153,9 @@ describe Sumitup::Parser do
       result = parser.summarize(@html, 10000)
       doc = Nokogiri::HTML(result)
       doc.css('img').length.should == 2
+    end
+    it "should add a width to images that don't have one" do
+      @long_result.should include(%Q{<img src="http://www.example.com/nowidth.jpg" width="#{@image_width_limit}">})
     end
   end
   

@@ -2,6 +2,11 @@
 
 Given an html document or fragment this gem will build a summary of the contents
 
+
+parser = Sumitup::Parser.new 
+summary = parser.summarize(item.content, length)
+summary = parser.summarize(item.title, length) if parser.is_blank?(summary)
+
 == Copyright
 
 Copyright (c) 2012 Tatemae. See LICENSE.txt for further details.
