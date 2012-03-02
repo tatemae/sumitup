@@ -1,0 +1,7 @@
+= sumitup
+
+Given an html document or fragment this gem will build a summary of the contents
+
+== Copyright
+
+Copyright (c) 2012 Tatemae. See LICENSE.txt for further details.
