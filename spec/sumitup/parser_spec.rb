@@ -7,6 +7,28 @@ describe Sumitup::Parser do
       @html = IO.read(File.join(File.dirname(__FILE__), '..', 'fixtures', 'basic.html'))
     end
     
+    it "should summarize the content by number of words" do
+      parser = Sumitup::Parser.new(:max_words => 1000)
+      result = parser.summarize(@html, 5)
+      result.should_not include('consectetur')
+      result.should include('amet')
+    end
+    
+    it "should keep permitted html in summary" do
+      parser = Sumitup::Parser.new(:max_words => 1000)
+      result = parser.summarize(@html, 5)
+      result.should include('strong')
+      result.should include('blockquote')
+    end
+    
+    it "should remove empty tags after truncating text" do
+      parser = Sumitup::Parser.new(:max_words => 5)
+      result = parser.summarize(@html)
+      result.should_not include('ul')
+      result.should_not include('li')
+      result.should_not include('<span></span>')
+    end
+    
     describe "Sanitize options" do
       it "should remove html comments" do
         result = Sumitup::Parser.new.summarize(@html, 100000)
@@ -18,22 +40,8 @@ describe Sumitup::Parser do
         result.should_not include('<style type="text/css">')
       end
     end
-    
+        
     describe "word_transformer" do
-      it "should summarize the content by number of words" do
-        parser = Sumitup::Parser.new(:max_words => 1000)
-        result = parser.summarize(@html, 5)
-        result.should_not include('consectetur')
-        result.should include('amet')
-      end
-      
-      it "should keep permitted html in summary" do
-        parser = Sumitup::Parser.new(:max_words => 1000)
-        result = parser.summarize(@html, 5)
-        result.should include('strong')
-        result.should include('blockquote')
-      end
-      
       it "should remove empty tags" do
         result = Sumitup::Parser.new.summarize(@html, 100000)
         result.should_not include('<p></p>')

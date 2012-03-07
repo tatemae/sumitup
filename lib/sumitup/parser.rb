@@ -71,8 +71,17 @@ module Sumitup
         else
           # if the text of the current node makes us go over then truncate it
           result, count = snippet(node.inner_text, max - self.word_count)
-          self.word_count += count
-          node.content = result
+          if count == 0 || is_blank?(result)
+            node.remove
+          else
+            self.word_count += count
+            node.content = result
+          end
+        end
+      else
+        # Remove empty nodes
+        if node.text.empty? && node.children.empty? && !['img', 'br'].include?(node.name)
+          node.remove
         end
       end
       
