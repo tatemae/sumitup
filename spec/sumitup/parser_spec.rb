@@ -29,6 +29,13 @@ describe Sumitup::Parser do
       result.should_not include('<span></span>')
     end
     
+    it "should be reusable" do
+      parser = Sumitup::Parser.new(:max_words => 5)
+      result = parser.summarize(@html)
+      result2 = parser.summarize(@html)
+      result.should == result2
+    end
+    
     describe "Sanitize options" do
       it "should remove html comments" do
         result = Sumitup::Parser.new.summarize(@html, 100000)

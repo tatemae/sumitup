@@ -48,6 +48,9 @@ module Sumitup
     end
 
     def summarize_fragment(node, max = nil)
+      # Always reset counts
+      self.word_count = 0
+      self.image_count = 0
       clean = Sanitize.clean_node!(node, 
         :elements => elements, 
         :attributes => attributes, 
