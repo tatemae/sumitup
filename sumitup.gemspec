@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sumitup"
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin Ball"]
-  s.date = "2012-03-06"
+  s.date = "2012-03-07"
   s.description = "Given an html document or fragment this gem will build a summary of the content."
   s.email = "justinball@gmail.com"
   s.extra_rdoc_files = [
