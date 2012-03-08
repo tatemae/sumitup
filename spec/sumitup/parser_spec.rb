@@ -7,6 +7,15 @@ describe Sumitup::Parser do
       @html = IO.read(File.join(File.dirname(__FILE__), '..', 'fixtures', 'basic.html'))
     end
     
+    it "should used the default max_words" do
+      content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est enim, accumsan sollicitudin convallis sed, tempor vel libero. Quisque nulla tortor, 
+        rhoncus sit amet fermentum ut, imperdiet iaculis risus. Nunc vulputate arcu non turpis consequat molestie. Vestibulum ante ipsum primis in faucibus orci luctus 
+        et ultrices posuere cubilia Curae; Nam blandit malesuada leo et posuere. Suspendisse potenti. '
+      parser = Sumitup::Parser.new(:max_words => 10)
+      result = parser.summarize(content)
+      result.should == 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est'
+    end
+    
     it "should summarize the content by number of words" do
       parser = Sumitup::Parser.new(:max_words => 1000)
       result = parser.summarize(@html, 5)
