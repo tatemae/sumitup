@@ -98,6 +98,7 @@ module Sumitup
     def snippet(text, max)
       result = ''
       count = 0
+      # TODO figure out support for pre that contains code blocks..
       return [result, count] if is_blank?(text)
       text.split.each do |word|
         return [result.strip!, count] if count >= max
@@ -110,7 +111,24 @@ module Sumitup
     def is_blank?(text)
       text.nil? || text.empty?
     end
-
+    
+    def request_image_size(image_url)
+      width = nil
+      height = nil
+      open(image_url, 'rb') do |f|
+        img = Dimensions(f)
+        img.read
+        width = img.width
+        height = img.height
+      end
+      [width, height]
+    end
+    
+    def image_height(existing_height, existing_width, image_width_limit)
+      ratio = image_width_limit.to_f/existing_width.to_f
+      (existing_height.to_f * ratio).to_i
+    end
+        
     def word_transformer
       me = self
       lambda do |env|
@@ -144,21 +162,23 @@ module Sumitup
           node.remove
         else
           keep_it = false
-        
-          if node.attributes['width']
-            width = node.attributes['width'].value.to_i rescue 0
-            keep_it = true if width > me.min_image_size
-          else
-            width = nil
-            keep_it = true
-          end
 
+          existing_width = node.attributes['width'].value.to_i rescue nil if node.attributes['width']
+          existing_height = node.attributes['height'].value.to_i rescue nil if node.attributes['height']
+          
+          if !existing_width || !existing_height
+            image_url = node.attributes['src'] rescue nil
+            existing_width, existing_height = me.request_image_size(image_url) rescue [nil, nil] if image_url
+          end
+            
+          existing_width ||= 0
+          
+          keep_it = true if existing_width > me.min_image_size
+          
           if keep_it
             me.image_count += 1
-            if width == nil || width > me.image_width_limit
-              node['width'] = me.image_width_limit.to_s
-              node.attributes['height'].remove if node.attributes['height']
-            end
+            node['height'] = me.image_height(existing_height, existing_width, me.image_width_limit).to_s
+            node['width'] = me.image_width_limit.to_s
           else
             node.remove
           end

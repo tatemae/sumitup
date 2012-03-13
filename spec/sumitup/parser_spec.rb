@@ -73,7 +73,7 @@ describe Sumitup::Parser do
       it "should set the width to 240 if width is greater than 240" do
         parser = Sumitup::Parser.new(:image_width_limit => 240)
         result = parser.summarize(@html, 10000)
-        result.should include(%Q{img src="http://www.example.com/big.jpg" width="240">})
+        result.should include(%Q{img src="http://www.example.com/big.jpg" width="240" height="240">})
       end
       
       it "should only allow 2 images" do
@@ -88,10 +88,10 @@ describe Sumitup::Parser do
         result.should_not include('http://www.example.com/small.jpg')
       end
       
-      it "should keep images as is that are not over the width limit" do
+      it "should enlarge images that are not over the width limit" do
         parser = Sumitup::Parser.new(:max_images => 1000, :image_width_limit => 200)
         result = parser.summarize(@html, 100000)
-        result.should include('<img src="http://www.example.com/photo.jpg" width="150" height="150" title="" alt="">')
+        result.should include('<img src="http://www.example.com/photo.jpg" width="200" height="200" title="" alt="">')
       end
     end
     
@@ -128,6 +128,45 @@ describe Sumitup::Parser do
     end
     it "should be false if text is 'valid'" do
       @parser.is_blank?('valid').should be_false
+    end
+  end
+  
+  describe "request_image_size" do
+    before do
+      @parser = Sumitup::Parser.new
+    end
+    it "should get width and height from the remote image" do
+      url = "http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png"
+      width, height = @parser.request_image_size(url)
+      width.should == 135
+      height.should == 155
+    end
+  end
+  
+  describe "image_height" do
+    before do
+      @parser = Sumitup::Parser.new
+    end
+    it "should calculate a smaller height based on the width change" do
+      image_width_limit = 100
+      existing_height = 1000
+      existing_width = 1000
+      height = @parser.image_height(existing_height, existing_width, image_width_limit)
+      height.should == 100
+    end
+    it "should calculate a larger height based on the width change" do
+      image_width_limit = 100
+      existing_height = 10
+      existing_width = 50
+      height = @parser.image_height(existing_height, existing_width, image_width_limit)
+      height.should == 20
+    end
+    it "should calculate new height based on width" do
+      image_width_limit = 100
+      existing_height = 143
+      existing_width = 136
+      height = @parser.image_height(existing_height, existing_width, image_width_limit)
+      height.should == 105
     end
   end
   
