@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sumitup"
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin Ball"]
-  s.date = "2012-03-07"
+  s.date = "2012-03-13"
   s.description = "Given an html document or fragment this gem will build a summary of the content."
   s.email = "justinball@gmail.com"
   s.extra_rdoc_files = [
@@ -46,6 +46,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<sanitize>, [">= 0"])
+      s.add_runtime_dependency(%q<dimensions>, [">= 0"])
       s.add_development_dependency(%q<growl>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
@@ -58,6 +59,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<ruby-debug>, [">= 0"])
     else
       s.add_dependency(%q<sanitize>, [">= 0"])
+      s.add_dependency(%q<dimensions>, [">= 0"])
       s.add_dependency(%q<growl>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
@@ -71,6 +73,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<sanitize>, [">= 0"])
+    s.add_dependency(%q<dimensions>, [">= 0"])
     s.add_dependency(%q<growl>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
