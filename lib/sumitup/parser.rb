@@ -125,6 +125,11 @@ module Sumitup
     end
     
     def image_height(existing_height, existing_width, image_width_limit)
+      # if width is empty just set it to the default width
+      existing_width ||= image_width_limit
+      # if height is empty set it to width and then to the default width (not a lot of other options)
+      existing_height ||= existing_width
+      existing_height ||= image_width_limit
       ratio = image_width_limit.to_f/existing_width.to_f
       (existing_height.to_f * ratio).to_i
     end

@@ -168,6 +168,20 @@ describe Sumitup::Parser do
       height = @parser.image_height(existing_height, existing_width, image_width_limit)
       height.should == 105
     end
+    it "should handle nil height" do
+      image_width_limit = 100
+      existing_height = nil
+      existing_width = 200
+      height = @parser.image_height(existing_height, existing_width, image_width_limit)
+      height.should == 100
+    end
+    it "should handle nil width" do
+      image_width_limit = 100
+      existing_height = 200
+      existing_width = nil
+      height = @parser.image_height(existing_height, existing_width, image_width_limit)
+      height.should == 200
+    end
   end
   
 end
